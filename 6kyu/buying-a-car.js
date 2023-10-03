@@ -1,3 +1,5 @@
+//Improvement notes on the bottom for future reference
+
 function nbMonths(startPriceOld, startPriceNew, savingperMonth, percentLossByMonth){
   let monthCount=0
   let output=[]
@@ -25,3 +27,6 @@ function nbMonths(startPriceOld, startPriceNew, savingperMonth, percentLossByMon
     return(output)
   }
 }
+
+/*A few variables were not needed. For example, monthCount is unnecessary because every iteration of the loop, is one month. 
+If (monthCount%2===0{} can be replaced by let totalMonthlySavings=0 and then totalMonthlySavings+=savingperMonth*/
