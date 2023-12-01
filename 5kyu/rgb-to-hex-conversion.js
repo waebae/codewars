@@ -12,5 +12,4 @@ function rgb(r, g, b) {
   }
   return(convert(r)+convert(g)+convert(b))
 
-  
 }
