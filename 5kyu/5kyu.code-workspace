@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../Class 30"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Class 30"
+	}
+}
