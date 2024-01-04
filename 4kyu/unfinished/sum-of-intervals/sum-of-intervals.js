@@ -44,4 +44,4 @@ function sumIntervals(intervals) {
    console.log(result)
    return(result)
  }
- sumIntervals([1,4] , [7, 10] , [3, 5])
+ sumIntervals([[1,4] , [7, 10] , [3, 5]])
