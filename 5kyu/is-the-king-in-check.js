@@ -1,16 +1,22 @@
 function kingIsInCheck (chessboard) {
     //Plan
-    /*Plot the King's position on chessboardCombined (for diagonal checks) and
-    plot the King's position on chessboard and use the chessboard[index] that
-    the King is on for straight across checks */
+    /*Find the King's index position on chessboardCombined (for diagonal checks)
+    and find the King's index position on chessboard and use the
+    chessboard[index]that the King is on for straight across checks 
+    
+    Find all the index positions that the pieces on the board can take and see
+    if the King's index position is a part of those positions
+
+    const allPiecesPosition = x.postion, y.position, z.position
+    if allPiecesPosition.includes(kingsPosition) return true:false
+    
+    */
 
     //Errors
-    /*Fix the diagonal check, it is returning false values because the
-    algorithm is not suitable.
-    
-    My solution right now is to find on the chessboard[index], how many squares
-    are to the left and right of the diagonal, and perform two separate push
-    conditional based on the amount of squares on left and right*/
+    /*Improved diagonal check algorithm as per last commit, but discovered that
+    left and right squares are an inadequate check. However this does not seem
+    to break the code, since the King can't be off the board anyway - so program
+    will not return any inaccurate booleans*/
 
     //I make a concat chessboard array so that I can use its 0-63 index to more
     //easily find where pieces are
@@ -18,34 +24,54 @@ function kingIsInCheck (chessboard) {
     
     //If there are no white pieces on the board - return false
     if(chessboardCombined.indexOf('♛')==-1&&chessboardCombined.indexOf('♝')==-1&&chessboardCombined.indexOf('♞')==-1&&chessboardCombined.indexOf('♜')==-1&&chessboardCombined.indexOf('♟')==-1){
-        console.log(false)
+        return(false)
     }
 
-    /*Find the row of the piece
-    If the piece is a queen or rook, check that row for a King, return check
-    If the piece is a queen or bishop, check the diagonal, not sure how I'm
-    going to do that yet*/
+    //kingsPosition
+    const kingsPosition=chessboardCombined.indexOf('♛')
+    // console.log(kingsPosition)
+
+    //Finds and returns the array (row) of a piece
     function rowOfPiece(piece){ 
         for (index in chessboard){
             if(chessboard[index].indexOf(piece)!==-1){
-                console.log(index)
+                return(index)
+            }
         }
+    }
+    //Finds and returns the index of a piece in their array (row)
+    function indexOfPieceInRow(piece){
+        return chessboard[rowOfPiece(piece)].indexOf(piece)
+    }
+    //Find and returns how many indexes are on the left and right
+    function howManyLeftAndRight(piece){
+        let index = indexOfPieceInRow(piece)
+        let leftSquares = index
+        let rightSquares = 7 - index
+        let result=[leftSquares,rightSquares]
+        return result
+    }
+    //Uses the possible left and right indexes to find all possible squares,
+    //prevents any false positives from being returned
+    function allPossibleSquares(piece,array,position){
+        const leftRight = howManyLeftAndRight(piece)
+        for(i=0;i<=leftRight[0];i++){ //left values
+            console.log(leftRight[0])
+            array.push(position+7*i)
+            array.push(position-9*i)
+        }
+        for(i=1;i<=leftRight[1];i++){
+            console.log(leftRight[1])
+            array.push(position-7*i)
+            array.push(position+9*i)
         }
     }
 
-    function indexOfPieceinRow(){
-
-    }
     //If queen in on the board, find all of queen's possible squares
     let queenPosition=chessboardCombined.indexOf('♛')
     if(queenPosition!=-1){
-        let queenPossibleSquares=[]
-        for(let i=1;i<4;i++){
-            queenPossibleSquares.push(queenPosition+9*i)
-            queenPossibleSquares.push(queenPosition-9*i)
-            queenPossibleSquares.push(queenPosition+7*i)
-            queenPossibleSquares.push(queenPosition-7*i)
-        }
+        let queenPossibleSquares=[queenPosition]
+        allPossibleSquares('♛',queenPossibleSquares,queenPosition)
         console.log(queenPosition)
         console.log(queenPossibleSquares)
     }
@@ -55,10 +81,10 @@ function kingIsInCheck (chessboard) {
     if(bishopPosition!=-1){
         let bishopPossibleSquares=[]
         for(let i=1;i<4;i++){
-            bishopPossibleSquares.push(bishopPosition+9*i)
-            bishopPossibleSquares.push(bishopPosition-9*i)
-            bishopPossibleSquares.push(bishopPosition+7*i)
-            bishopPossibleSquares.push(bishopPosition-7*i)
+            bishopPossibleSquares.push(bishopPosition+9*i) //bot right
+            bishopPossibleSquares.push(bishopPosition-9*i) //top left
+            bishopPossibleSquares.push(bishopPosition+7*i) //bot left
+            bishopPossibleSquares.push(bishopPosition-7*i) //top right
         }
         console.log(bishopPosition)
         console.log(bishopPossibleSquares)
@@ -84,13 +110,15 @@ kingIsInCheck([
 ['♔', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[0]  [0]-[7]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[1]  [8]-[15]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[2]  [16]-[23]
-[' ', ' ', ' ', ' ', '♛', ' ', ' ', ' '],//[3]  [24]-[31]
-[' ', ' ', ' ', ' ', ' ', ' ', ' ', '♟'],//[4]  [32]-[39] [30][21][12][3]
+[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[3]  [24]-[31]
+[' ', ' ', ' ', '♛', ' ', ' ', ' ', '♟'],//[4]  [32]-[39] [30][21][12][3]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[5]  [40]-[47]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[6]  [48]-[55]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']])//[7] [56]-[63]
 
 //Data table
+//[42, 26, 49, 17, 56, 8, 28, 44, 21, 53, 14, 62, 7, 71]
+
 
 //'♔' for the black King;
 //'♛' - white queen
