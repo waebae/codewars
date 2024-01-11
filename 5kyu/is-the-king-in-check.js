@@ -13,13 +13,8 @@ function kingIsInCheck (chessboard) {
     */
 
     //Errors
-    /*Improved diagonal check algorithm as per last commit, but discovered that
-    left and right squares are an inadequate check. However this does not seem
-    to break the code, since the King can't be off the board anyway - so program
-    will not return any inaccurate booleans*/
-
-    //I make a concat chessboard array so that I can use its 0-63 index to more
-    //easily find where pieces are
+    /*Added bishop square check
+    Rook square check is currently work in progress, the row check has not been completed. */
     let chessboardCombined=chessboard[0].concat(chessboard[1],chessboard[2],chessboard[3],chessboard[4],chessboard[5],chessboard[6],chessboard[7])
     
     //If there are no white pieces on the board - return false
@@ -51,9 +46,9 @@ function kingIsInCheck (chessboard) {
         let result=[leftSquares,rightSquares]
         return result
     }
-    //Uses the possible left and right indexes to find all possible squares,
-    //prevents any false positives from being returned
-    function allPossibleSquares(piece,array,position){
+    //Uses the possible left and right indexes to find all diagonal possible
+    //squares, prevents any false positives from being returned
+    function allDiagonalPossibleSquares(piece,array,position){
         const leftRight = howManyLeftAndRight(piece)
         for(i=0;i<=leftRight[0];i++){ //left values
             console.log(leftRight[0])
@@ -66,28 +61,47 @@ function kingIsInCheck (chessboard) {
             array.push(position+9*i)
         }
     }
+    //Find all horizontal and vertical possible squares
+    function allHorizontalAndVerticalPossibleSquares(piece,array,position){
+        let row = rowOfPiece(piece)
+        for(index in chessboard[row]){
+            console.log('hi')
+            array.push((row*8-1))
+        }
+        if(piece=='♛'){
+            for(i=0;i<chessboard.length;i++){
+                array.push(position+(8*i))
+                array.push(position-(8*i))
+            }
+        }
+        console.log(array)
+        return array    
+    }
 
-    //If queen in on the board, find all of queen's possible squares
+    //If queen sn on the board, find all of queen's possible squares
     let queenPosition=chessboardCombined.indexOf('♛')
     if(queenPosition!=-1){
         let queenPossibleSquares=[queenPosition]
-        allPossibleSquares('♛',queenPossibleSquares,queenPosition)
-        console.log(queenPosition)
+        allDiagonalPossibleSquares('♛',queenPossibleSquares,queenPosition)
         console.log(queenPossibleSquares)
     }
     //If the bishop is on the board, find all of the bishop's possible squares
     let bishopPosition = chessboardCombined.indexOf('♟')
-
     if(bishopPosition!=-1){
-        let bishopPossibleSquares=[]
-        for(let i=1;i<4;i++){
-            bishopPossibleSquares.push(bishopPosition+9*i) //bot right
-            bishopPossibleSquares.push(bishopPosition-9*i) //top left
-            bishopPossibleSquares.push(bishopPosition+7*i) //bot left
-            bishopPossibleSquares.push(bishopPosition-7*i) //top right
+        let bishopPossibleSquares=[bishopPosition]
+        if(bishopPosition!=-1){
+            let bishopPossibleSquares=[bishopPosition]
+            allDiagonalPossibleSquares('♟',bishopPossibleSquares,bishopPosition)
+            console.log(bishopPossibleSquares)
         }
-        console.log(bishopPosition)
-        console.log(bishopPossibleSquares)
+    }
+    //If rook is on the board, find all of the rook's possible squares
+    let rookPosition = chessboardCombined.indexOf('♜')
+    console.log(rookPosition)
+    if(rookPosition!=-1){
+        let rookPossibleSquares=[rookPosition]
+        allHorizontalAndVerticalPossibleSquares('♜',rookPossibleSquares,rookPosition)
+        console.log(rookPossibleSquares)
     }
 
     /* Check digaonals for King 
@@ -108,7 +122,7 @@ function kingIsInCheck (chessboard) {
 kingIsInCheck([
 
 ['♔', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[0]  [0]-[7]
-[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[1]  [8]-[15]
+['♜', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[1]  [8]-[15]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[2]  [16]-[23]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[3]  [24]-[31]
 [' ', ' ', ' ', '♛', ' ', ' ', ' ', '♟'],//[4]  [32]-[39] [30][21][12][3]
