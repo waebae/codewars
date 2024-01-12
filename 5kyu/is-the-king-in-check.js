@@ -13,8 +13,15 @@ function kingIsInCheck (chessboard) {
     */
 
     //Errors
-    /*Fixed queen squares function
-    need to add conditional for if there is a piece in front of the King
+    /*Added Diagonal check for blocked pieces
+    Added Vertical check for blocked pieces
+    
+    
+    Code does not currently test for multiples of the same pieces
+    Need to Fix Pawn Algo - false positive pushes when on the left and right
+    side of the board
+    Nedd to Fix Rook Algo - false positive pushes due to algo working from left
+    to right
     
     Plan:
     Find all the squares on chessboardCombined for all the pieces, put them into
@@ -23,6 +30,7 @@ function kingIsInCheck (chessboard) {
     -This function will stop pushing any further indexes if that index value
     shares the value with any pieces on the board.
     */
+
     let chessboardCombined=chessboard[0].concat(chessboard[1],chessboard[2],chessboard[3],chessboard[4],chessboard[5],chessboard[6],chessboard[7])
     
     //If there are no white pieces on the board - return false
@@ -33,7 +41,19 @@ function kingIsInCheck (chessboard) {
     //kingsPosition
     const kingsPosition=chessboardCombined.indexOf('♔')
     console.log(kingsPosition)
-
+    //allOtherPiecesPosition
+    function allOtherPiecesPositionPush(){
+        const allOtherPiecesPosition = []
+        allOtherPiecesPosition.push(chessboardCombined.indexOf('♛'))
+        allOtherPiecesPosition.push(chessboardCombined.indexOf('♝'))
+        allOtherPiecesPosition.push(chessboardCombined.indexOf('♜'))
+        allOtherPiecesPosition.push(chessboardCombined.indexOf('♞'))
+        allOtherPiecesPosition.push(chessboardCombined.indexOf('♟'))
+        return allOtherPiecesPosition
+    }
+    const allOtherPiecesPosition=allOtherPiecesPositionPush()
+    console.log(allOtherPiecesPosition)
+    
     //Finds and returns the array (row) of a piece
     function rowOfPiece(piece){ 
         for (index in chessboard){
@@ -58,35 +78,108 @@ function kingIsInCheck (chessboard) {
     //squares, prevents any false positives from being returned
     function allDiagonalPossibleSquares(piece,array,position){
         const leftRight = howManyLeftAndRight(piece)
-        for(i=0;i<=leftRight[0];i++){ //left values
-
-            array.push(position+7*i)
-            array.push(position-9*i)
+        let nextSquare = 0
+        //bottomLeft
+        for(i=1;i<=8;i++){
+            nextSquare = position+7*(i)
+            if(allOtherPiecesPosition.includes(nextSquare)==false){
+                array.push(position+7*(i))
+            }
+            if (allOtherPiecesPosition.includes(nextSquare)){
+                break   
+            }
         }
-        for(i=1;i<=leftRight[1];i++){
+        //topLeft
+        for(i=1;i<=8;i++){
+            nextSquare = position-9*(i)
 
-            array.push(position-7*i)
-            array.push(position+9*i)
+
+            if(allOtherPiecesPosition.includes(nextSquare)==false){
+
+                array.push(position-9*(i))
+            }
+            if (allOtherPiecesPosition.includes(nextSquare)){
+                break   
+            }
+        }
+        //bottomRight
+        for(i=1;i<=8;i++){
+            nextSquare = position+9*(i)
+
+
+            if(allOtherPiecesPosition.includes(nextSquare)==false){
+
+                array.push(position+9*(i))
+            }
+            if (allOtherPiecesPosition.includes(nextSquare)){
+                break   
+            }
+        }
+
+        //topRight
+        for(i=1;i<=8;i++){
+            nextSquare = position-7*(i)
+            if(allOtherPiecesPosition.includes(nextSquare)==false){
+
+                array.push(position-7*(i))
+            }
+            if (allOtherPiecesPosition.includes(nextSquare)){
+                break   
+            }
         }
         return array
     }
     //Find all horizontal and vertical possible squares
     function allHorizontalAndVerticalPossibleSquares(piece,array,position){
+
+        //Find the last index of the row where the piece is located.
         let row = rowOfPiece(piece)
-        
         const tempChessBoard=chessboard
-        
-        // console.log(tempChessBoard)
         tempChessBoard[row][tempChessBoard.length-1]='temp'
-        // console.log(tempChessBoard)
         const tempChessBoardCombined=tempChessBoard[0].concat(tempChessBoard[1],tempChessBoard[2],tempChessBoard[3],tempChessBoard[4],tempChessBoard[5],tempChessBoard[6],tempChessBoard[7])
+        //After inserting 'temp' to the last idnex of the row on the combined
+        //board, count back 8 squares
         let lastIndexOfRow=tempChessBoardCombined.indexOf('temp')
         // console.log(lastIndexOfRow)
-        for(index in chessboard[row]){
-            array.push(position+8*index)
-            array.push(position-8*index)
-            array.push(lastIndexOfRow-index)
+
+        // Going Up Vertical Squares
+        let nextSquare=0
+        for(i=1;i<7;i++){
+            nextSquare=position-8*i
+            if(allOtherPiecesPosition.includes(nextSquare)==false){
+                array.push(position-8*i)
+            }
+            if(allOtherPiecesPosition.includes(nextSquare)==true){
+                break
+            }
         }
+        // Going Down Vertical Squares
+        
+        for(i=1;i<7;i++){
+            nextSquare=position+8*i
+            if(allOtherPiecesPosition.includes(nextSquare)==false){
+                array.push(position+8*i)
+            }
+            if(allOtherPiecesPosition.includes(nextSquare)==true){
+                break
+            }
+        }
+        //Going Left Across Row
+        for(i=0;i<7;i++){
+            console.log(lastIndexOfRow-i)
+            console.log(position)
+            let tempAllOtherPiecesPosition=allOtherPiecesPosition.filter((x)=> x!=position)
+            console.log(tempAllOtherPiecesPosition)
+            if(tempAllOtherPiecesPosition.includes(lastIndexOfRow-i)==false){
+
+                array.push(lastIndexOfRow-i)
+            }
+            if(tempAllOtherPiecesPosition.includes(lastIndexOfRow-i)==true){
+                break
+            }
+        }
+        
+      
         console.log(array)
         return array    
     }
@@ -97,12 +190,13 @@ function kingIsInCheck (chessboard) {
         if(queenPosition!=-1){
             let queenPossibleSquares=[queenPosition]
             allDiagonalPossibleSquares('♛',queenPossibleSquares,queenPosition)
-            allHorizontalAndVerticalPossibleSquares('♛',queenPossibleSquares,queenPosition,all)
+            allHorizontalAndVerticalPossibleSquares('♛',queenPossibleSquares,queenPosition)
             return queenPossibleSquares
         }
     }
     //If the bishop is on the board, find all of the bishop's possible squares
     let bishopPosition = chessboardCombined.indexOf('♝')
+
     function bishop(){
     if(bishopPosition!=-1){
         let bishopPossibleSquares=[bishopPosition]
@@ -120,7 +214,7 @@ function kingIsInCheck (chessboard) {
         if(rookPosition!=-1){
             let rookPossibleSquares=[rookPosition]
             allHorizontalAndVerticalPossibleSquares('♜',rookPossibleSquares,rookPosition)
-            isThereAPieceInTheWay('♜',rookPossibleSquares,rookPosition,rook)
+            // isThereAPieceInTheWay('♜',rookPossibleSquares,rookPosition,rook)
             return(rookPossibleSquares)
         }
     }   
@@ -155,9 +249,12 @@ function kingIsInCheck (chessboard) {
 
     allPossibleSquares = allPossibleSquares.filter(function( element ) {
         return element !== undefined;
-     });
+    });
+
+
     console.log(allPossibleSquares)
     if(allPossibleSquares!=undefined){
+        // console.log(allPossibleSquares.includes(kingsPosition))
         return allPossibleSquares.includes(kingsPosition) ? true:false
     }
 
@@ -167,8 +264,8 @@ kingIsInCheck([
 //[35, 37, 5, 3, 10, 14, 26, 30]
 [' ', ' ', ' ', '3', ' ', '5', ' ', ' '],//[0]  [0]-[7]
 [' ', ' ', '0', ' ', ' ', ' ', '4', ' '],//[1]  [8]-[15]
-[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[2]  [16]-[23] [20]
-[' ', '♛', '♟', ' ', '♔', ' ', '0', ' '],//[3]  [24]-[31]
+[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[2]  [16]-[23] [18]
+['♜', '♟', '♔', ' ', ' ', ' ', ' ', ' '],//[3]  [24]-[31]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[4]  [32]-[39] [35]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[5]  [40]-[47]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[6]  [48]-[55]
