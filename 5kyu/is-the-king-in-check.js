@@ -13,18 +13,18 @@ function kingIsInCheck (chessboard) {
     */
 
     //Errors
-    /*Added bishop square check
-    Rook square check is currently work in progress, the row check has not been completed. */
+    /*Added pawn and knight square functions and kingIsInCheck result tenary.
+    Need to fix rook row squares check */
     let chessboardCombined=chessboard[0].concat(chessboard[1],chessboard[2],chessboard[3],chessboard[4],chessboard[5],chessboard[6],chessboard[7])
     
     //If there are no white pieces on the board - return false
-    if(chessboardCombined.indexOf('♛')==-1&&chessboardCombined.indexOf('♝')==-1&&chessboardCombined.indexOf('♞')==-1&&chessboardCombined.indexOf('♜')==-1&&chessboardCombined.indexOf('♟')==-1){
+    if(chessboardCombined.indexOf('♔')==-1&&chessboardCombined.indexOf('♝')==-1&&chessboardCombined.indexOf('♞')==-1&&chessboardCombined.indexOf('♜')==-1&&chessboardCombined.indexOf('♟')==-1){
         return(false)
     }
 
     //kingsPosition
-    const kingsPosition=chessboardCombined.indexOf('♛')
-    // console.log(kingsPosition)
+    const kingsPosition=chessboardCombined.indexOf('♔')
+    console.log(kingsPosition)
 
     //Finds and returns the array (row) of a piece
     function rowOfPiece(piece){ 
@@ -51,12 +51,12 @@ function kingIsInCheck (chessboard) {
     function allDiagonalPossibleSquares(piece,array,position){
         const leftRight = howManyLeftAndRight(piece)
         for(i=0;i<=leftRight[0];i++){ //left values
-            console.log(leftRight[0])
+
             array.push(position+7*i)
             array.push(position-9*i)
         }
         for(i=1;i<=leftRight[1];i++){
-            console.log(leftRight[1])
+
             array.push(position-7*i)
             array.push(position+9*i)
         }
@@ -64,15 +64,14 @@ function kingIsInCheck (chessboard) {
     //Find all horizontal and vertical possible squares
     function allHorizontalAndVerticalPossibleSquares(piece,array,position){
         let row = rowOfPiece(piece)
+        const tempChessBoard=chessboard
+        console.log(tempChessBoard)
+        console.log(tempChessBoard[row][tempChessBoard.length-1])
+        // console.log(lastIndexOfRow)
         for(index in chessboard[row]){
-            console.log('hi')
-            array.push((row*8-1))
-        }
-        if(piece=='♛'){
-            for(i=0;i<chessboard.length;i++){
-                array.push(position+(8*i))
-                array.push(position-(8*i))
-            }
+            array.push(position+8*index)
+            array.push(position-8*index)
+            // array.push(lastIndexOfRow-index)
         }
         console.log(array)
         return array    
@@ -80,52 +79,80 @@ function kingIsInCheck (chessboard) {
 
     //If queen sn on the board, find all of queen's possible squares
     let queenPosition=chessboardCombined.indexOf('♛')
-    if(queenPosition!=-1){
-        let queenPossibleSquares=[queenPosition]
-        allDiagonalPossibleSquares('♛',queenPossibleSquares,queenPosition)
-        console.log(queenPossibleSquares)
+    function queen(){
+        if(queenPosition!=-1){
+            let queenPossibleSquares=[queenPosition]
+            allDiagonalPossibleSquares('♛',queenPossibleSquares,queenPosition)
+            console.log(queenPossibleSquares)
+            return queenPossibleSquares
+        }
     }
     //If the bishop is on the board, find all of the bishop's possible squares
-    let bishopPosition = chessboardCombined.indexOf('♟')
+    let bishopPosition = chessboardCombined.indexOf('♝')
+    function bishop(){
     if(bishopPosition!=-1){
         let bishopPossibleSquares=[bishopPosition]
         if(bishopPosition!=-1){
             let bishopPossibleSquares=[bishopPosition]
-            allDiagonalPossibleSquares('♟',bishopPossibleSquares,bishopPosition)
-            console.log(bishopPossibleSquares)
+            allDiagonalPossibleSquares('♝',bishopPossibleSquares,bishopPosition)
+            return(bishopPossibleSquares)
+            }
         }
     }
     //If rook is on the board, find all of the rook's possible squares
-    let rookPosition = chessboardCombined.indexOf('♜')
-    console.log(rookPosition)
-    if(rookPosition!=-1){
-        let rookPossibleSquares=[rookPosition]
-        allHorizontalAndVerticalPossibleSquares('♜',rookPossibleSquares,rookPosition)
-        console.log(rookPossibleSquares)
-    }
-
-    /* Check digaonals for King 
-    First find the row and column of King i.e [4][2]
-    Then push an array with all the diagonal squares that bishop and queen can
-    go
-    If King's index matches one in the array, return check*/
-
-    rowOfPiece('♔')
-    console.log(chessboard[4].indexOf('♔'))
-
-
     
-    console.log(typeof(chessboard))
-    console.log(typeof(chessboard[4][2]))
+    function rook(){
+        let rookPosition = chessboardCombined.indexOf('♜')
+        if(rookPosition!=-1){
+            let rookPossibleSquares=[rookPosition]
+            allHorizontalAndVerticalPossibleSquares('♜',rookPossibleSquares,rookPosition)
+            return(rookPossibleSquares)
+        }
+    }   
+    /*Find all Knight squares */
+    function knight(){
+        let knightPosition = chessboardCombined.indexOf('♞')
+        let knightPossibleSquares =[]
+            if (knightPosition!=-1){
+                knightPossibleSquares.push(knightPosition+15)
+                knightPossibleSquares.push(knightPosition+17)
+                knightPossibleSquares.push(knightPosition-15)
+                knightPossibleSquares.push(knightPosition-17)
+                knightPossibleSquares.push(knightPosition-10)
+                knightPossibleSquares.push(knightPosition-6)
+                knightPossibleSquares.push(knightPosition+6)
+                knightPossibleSquares.push(knightPosition+10)
+            }
+        return knightPossibleSquares
+        }
+    /*Find all Pawn squares */
+    function pawn(){
+        let pawnPosition = chessboardCombined.indexOf('♟')
+        let pawnPossibleSquares=[]
+            if(pawnPosition!=-1){
+                pawnPossibleSquares.push(pawnPosition+9)
+                pawnPossibleSquares.push(pawnPosition+7)
+            }
+        return pawnPossibleSquares
+        }
 
+    let allPossibleSquares = knight().concat(pawn(),queen(),rook(),knight(),bishop())
+
+    allPossibleSquares = allPossibleSquares.filter(function( element ) {
+        return element !== undefined;
+     });
+    console.log(allPossibleSquares)
+    if(allPossibleSquares!=undefined){
+        return allPossibleSquares.includes(kingsPosition) ? true:false
+    }
 }
 kingIsInCheck([
-
-['♔', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[0]  [0]-[7]
-['♜', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[1]  [8]-[15]
-[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[2]  [16]-[23]
-[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[3]  [24]-[31]
-[' ', ' ', ' ', '♛', ' ', ' ', ' ', '♟'],//[4]  [32]-[39] [30][21][12][3]
+//[35, 37, 5, 3, 10, 14, 26, 30]
+[' ', ' ', ' ', '3', ' ', '5', ' ', ' '],//[0]  [0]-[7]
+[' ', ' ', '0', ' ', ' ', ' ', '4', ' '],//[1]  [8]-[15]
+[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[2]  [16]-[23] [20]
+[' ', ' ', '6', ' ', ' ', ' ', '0', ' '],//[3]  [24]-[31]
+[' ', ' ', '♔', ' ', ' ', '♜', ' ', ' '],//[4]  [32]-[39] [35]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[5]  [40]-[47]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[6]  [48]-[55]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']])//[7] [56]-[63]
