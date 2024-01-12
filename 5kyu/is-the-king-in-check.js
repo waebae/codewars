@@ -13,8 +13,8 @@ function kingIsInCheck (chessboard) {
     */
 
     //Errors
-    /*Added pawn and knight square functions and kingIsInCheck result tenary.
-    Need to fix rook row squares check */
+    /*Fixed rook squares function.
+    Need to fix queen squares function */
     let chessboardCombined=chessboard[0].concat(chessboard[1],chessboard[2],chessboard[3],chessboard[4],chessboard[5],chessboard[6],chessboard[7])
     
     //If there are no white pieces on the board - return false
@@ -64,14 +64,19 @@ function kingIsInCheck (chessboard) {
     //Find all horizontal and vertical possible squares
     function allHorizontalAndVerticalPossibleSquares(piece,array,position){
         let row = rowOfPiece(piece)
+        
         const tempChessBoard=chessboard
-        console.log(tempChessBoard)
-        console.log(tempChessBoard[row][tempChessBoard.length-1])
+        
+        // console.log(tempChessBoard)
+        tempChessBoard[row][tempChessBoard.length-1]='temp'
+        // console.log(tempChessBoard)
+        const tempChessBoardCombined=tempChessBoard[0].concat(tempChessBoard[1],tempChessBoard[2],tempChessBoard[3],tempChessBoard[4],tempChessBoard[5],tempChessBoard[6],tempChessBoard[7])
+        let lastIndexOfRow=tempChessBoardCombined.indexOf('temp')
         // console.log(lastIndexOfRow)
         for(index in chessboard[row]){
             array.push(position+8*index)
             array.push(position-8*index)
-            // array.push(lastIndexOfRow-index)
+            array.push(lastIndexOfRow-index)
         }
         console.log(array)
         return array    
