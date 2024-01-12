@@ -14,7 +14,15 @@ function kingIsInCheck (chessboard) {
 
     //Errors
     /*Fixed queen squares function
-    need to add conditional for if there is a piece in front of the King*/
+    need to add conditional for if there is a piece in front of the King
+    
+    Plan:
+    Find all the squares on chessboardCombined for all the pieces, put them into
+    array
+    Add a function called isThereAPieceInTheWay
+    -This function will stop pushing any further indexes if that index value
+    shares the value with any pieces on the board.
+    */
     let chessboardCombined=chessboard[0].concat(chessboard[1],chessboard[2],chessboard[3],chessboard[4],chessboard[5],chessboard[6],chessboard[7])
     
     //If there are no white pieces on the board - return false
@@ -82,14 +90,14 @@ function kingIsInCheck (chessboard) {
         console.log(array)
         return array    
     }
-
+    
     //If queen is  on the board, find all of queen's possible squares
     let queenPosition=chessboardCombined.indexOf('♛')
     function queen(){
         if(queenPosition!=-1){
             let queenPossibleSquares=[queenPosition]
             allDiagonalPossibleSquares('♛',queenPossibleSquares,queenPosition)
-            allHorizontalAndVerticalPossibleSquares('♛',queenPossibleSquares,queenPosition)
+            allHorizontalAndVerticalPossibleSquares('♛',queenPossibleSquares,queenPosition,all)
             return queenPossibleSquares
         }
     }
@@ -112,6 +120,7 @@ function kingIsInCheck (chessboard) {
         if(rookPosition!=-1){
             let rookPossibleSquares=[rookPosition]
             allHorizontalAndVerticalPossibleSquares('♜',rookPossibleSquares,rookPosition)
+            isThereAPieceInTheWay('♜',rookPossibleSquares,rookPosition,rook)
             return(rookPossibleSquares)
         }
     }   
@@ -141,7 +150,7 @@ function kingIsInCheck (chessboard) {
             }
         return pawnPossibleSquares
         }
-
+    
     let allPossibleSquares = knight().concat(pawn(),queen(),rook(),knight(),bishop())
 
     allPossibleSquares = allPossibleSquares.filter(function( element ) {
@@ -151,13 +160,15 @@ function kingIsInCheck (chessboard) {
     if(allPossibleSquares!=undefined){
         return allPossibleSquares.includes(kingsPosition) ? true:false
     }
+
+
 }
 kingIsInCheck([
 //[35, 37, 5, 3, 10, 14, 26, 30]
 [' ', ' ', ' ', '3', ' ', '5', ' ', ' '],//[0]  [0]-[7]
 [' ', ' ', '0', ' ', ' ', ' ', '4', ' '],//[1]  [8]-[15]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[2]  [16]-[23] [20]
-[' ', '♛', '6', ' ', '♔', ' ', '0', ' '],//[3]  [24]-[31]
+[' ', '♛', '♟', ' ', '♔', ' ', '0', ' '],//[3]  [24]-[31]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[4]  [32]-[39] [35]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[5]  [40]-[47]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[6]  [48]-[55]
