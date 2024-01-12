@@ -13,8 +13,8 @@ function kingIsInCheck (chessboard) {
     */
 
     //Errors
-    /*Fixed rook squares function.
-    Need to fix queen squares function */
+    /*Fixed queen squares function
+    need to add conditional for if there is a piece in front of the King*/
     let chessboardCombined=chessboard[0].concat(chessboard[1],chessboard[2],chessboard[3],chessboard[4],chessboard[5],chessboard[6],chessboard[7])
     
     //If there are no white pieces on the board - return false
@@ -60,6 +60,7 @@ function kingIsInCheck (chessboard) {
             array.push(position-7*i)
             array.push(position+9*i)
         }
+        return array
     }
     //Find all horizontal and vertical possible squares
     function allHorizontalAndVerticalPossibleSquares(piece,array,position){
@@ -82,13 +83,13 @@ function kingIsInCheck (chessboard) {
         return array    
     }
 
-    //If queen sn on the board, find all of queen's possible squares
+    //If queen is  on the board, find all of queen's possible squares
     let queenPosition=chessboardCombined.indexOf('♛')
     function queen(){
         if(queenPosition!=-1){
             let queenPossibleSquares=[queenPosition]
             allDiagonalPossibleSquares('♛',queenPossibleSquares,queenPosition)
-            console.log(queenPossibleSquares)
+            allHorizontalAndVerticalPossibleSquares('♛',queenPossibleSquares,queenPosition)
             return queenPossibleSquares
         }
     }
@@ -156,8 +157,8 @@ kingIsInCheck([
 [' ', ' ', ' ', '3', ' ', '5', ' ', ' '],//[0]  [0]-[7]
 [' ', ' ', '0', ' ', ' ', ' ', '4', ' '],//[1]  [8]-[15]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[2]  [16]-[23] [20]
-[' ', ' ', '6', ' ', ' ', ' ', '0', ' '],//[3]  [24]-[31]
-[' ', ' ', '♔', ' ', ' ', '♜', ' ', ' '],//[4]  [32]-[39] [35]
+[' ', '♛', '6', ' ', '♔', ' ', '0', ' '],//[3]  [24]-[31]
+[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[4]  [32]-[39] [35]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[5]  [40]-[47]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[6]  [48]-[55]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']])//[7] [56]-[63]
