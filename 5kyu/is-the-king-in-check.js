@@ -37,10 +37,18 @@ function kingIsInCheck (chessboard) {
     if(chessboardCombined.indexOf('♔')==-1&&chessboardCombined.indexOf('♝')==-1&&chessboardCombined.indexOf('♞')==-1&&chessboardCombined.indexOf('♜')==-1&&chessboardCombined.indexOf('♟')==-1){
         return(false)
     }
-
+    //piecesCount
+    function piecesCount(piece){
+        let count=0
+        for(i=0;i<chessboardCombined.length;i++){
+            if(chessboardCombined[i]==piece){
+                count++
+            }
+        }
+        return count
+    }
     //kingsPosition
     const kingsPosition=chessboardCombined.indexOf('♔')
-    console.log(kingsPosition)
     //allOtherPiecesPosition
     function allOtherPiecesPositionPush(){
         const allOtherPiecesPosition = []
@@ -52,8 +60,6 @@ function kingIsInCheck (chessboard) {
         return allOtherPiecesPosition
     }
     const allOtherPiecesPosition=allOtherPiecesPositionPush()
-    console.log(allOtherPiecesPosition)
-    
     //Finds and returns the array (row) of a piece
     function rowOfPiece(piece){ 
         for (index in chessboard){
@@ -92,10 +98,7 @@ function kingIsInCheck (chessboard) {
         //topLeft
         for(i=1;i<=8;i++){
             nextSquare = position-9*(i)
-
-
             if(allOtherPiecesPosition.includes(nextSquare)==false){
-
                 array.push(position-9*(i))
             }
             if (allOtherPiecesPosition.includes(nextSquare)){
@@ -105,10 +108,10 @@ function kingIsInCheck (chessboard) {
         //bottomRight
         for(i=1;i<=8;i++){
             nextSquare = position+9*(i)
-
-
+            // console.log(nextSquare)
+            // console.log(allOtherPiecesPosition)
+            // console.log(allOtherPiecesPosition.includes(nextSquare+9*(i)))
             if(allOtherPiecesPosition.includes(nextSquare)==false){
-
                 array.push(position+9*(i))
             }
             if (allOtherPiecesPosition.includes(nextSquare)){
@@ -120,7 +123,6 @@ function kingIsInCheck (chessboard) {
         for(i=1;i<=8;i++){
             nextSquare = position-7*(i)
             if(allOtherPiecesPosition.includes(nextSquare)==false){
-
                 array.push(position-7*(i))
             }
             if (allOtherPiecesPosition.includes(nextSquare)){
@@ -191,7 +193,7 @@ function kingIsInCheck (chessboard) {
             }
         }
         console.log(kingsRowPosition)
-        console.log(chessboard[row][piece])
+
         if(kingsRowPosition>chessboard.indexOf([row][piece])){//if the King is to the right of the rook
             
             for(i=0;i<8;i++){                
@@ -224,17 +226,22 @@ function kingIsInCheck (chessboard) {
         }
     }
     //If the bishop is on the board, find all of the bishop's possible squares
-    let bishopPosition = chessboardCombined.indexOf('♝')
-
+    
     function bishop(){
-    if(bishopPosition!=-1){
-        let bishopPossibleSquares=[bishopPosition]
-        if(bishopPosition!=-1){
-            let bishopPossibleSquares=[bishopPosition]
-            allDiagonalPossibleSquares('♝',bishopPossibleSquares,bishopPosition)
-            return(bishopPossibleSquares)
+        
+        const bishopCount=piecesCount('♝')
+        let index=0
+            for(i=0;i<bishopCount;i++){
+                let bishopPosition = chessboardCombined.indexOf('♝',index)
+                if(bishopPosition!=-1){
+                    let bishopPossibleSquares=[bishopPosition]
+                    allDiagonalPossibleSquares('♝',bishopPossibleSquares,bishopPosition)
+                    return(bishopPossibleSquares)
+                }
+                index=bishopPosition
+                console.log(index)
             }
-        }
+
     }
     //If rook is on the board, find all of the rook's possible squares
     
@@ -282,6 +289,7 @@ function kingIsInCheck (chessboard) {
 
 
     console.log(allPossibleSquares)
+    console.log(allPossibleSquares.includes(kingsPosition))
     if(allPossibleSquares!=undefined){
         // console.log(allPossibleSquares.includes(kingsPosition))
         return allPossibleSquares.includes(kingsPosition) ? true:false
@@ -291,11 +299,11 @@ function kingIsInCheck (chessboard) {
 }
 kingIsInCheck([
 //[35, 37, 5, 3, 10, 14, 26, 30]
-[' ', ' ', ' ', '3', ' ', '5', ' ', ' '],//[0]  [0]-[7]
-[' ', ' ', '0', ' ', ' ', ' ', '4', ' '],//[1]  [8]-[15]
+['♝', ' ', '♝', '♞', ' ', ' ', ' ', '♝'],//[0]  [0]-[7]
+[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[1]  [8]-[15]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[2]  [16]-[23] [18]
-['♜', '♞', '♔', ' ', ' ', ' ', ' ', ' '],//[3]  [24]-[31]
-[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[4]  [32]-[39] [35]
+[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[3]  [24]-[31]
+[' ', ' ', ' ', ' ', ' ', '♔', ' ', ' '],//[4]  [32]-[39] [35]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[5]  [40]-[47]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[6]  [48]-[55]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']])//[7] [56]-[63]
