@@ -135,11 +135,13 @@ function kingIsInCheck (chessboard) {
         //Find the last index of the row where the piece is located.
         let row = rowOfPiece(piece)
         const tempChessBoard=chessboard
-        tempChessBoard[row][tempChessBoard.length-1]='temp'
+        tempChessBoard[row][tempChessBoard.length-1]='last'
+        tempChessBoard[row][0]='first'
         const tempChessBoardCombined=tempChessBoard[0].concat(tempChessBoard[1],tempChessBoard[2],tempChessBoard[3],tempChessBoard[4],tempChessBoard[5],tempChessBoard[6],tempChessBoard[7])
         //After inserting 'temp' to the last idnex of the row on the combined
         //board, count back 8 squares
-        let lastIndexOfRow=tempChessBoardCombined.indexOf('temp')
+        let lastIndexOfRow=tempChessBoardCombined.indexOf('last')
+        let firstIndexOfRow=tempChessBoardCombined.indexOf('first')
         // console.log(lastIndexOfRow)
 
         // Going Up Vertical Squares
@@ -154,7 +156,9 @@ function kingIsInCheck (chessboard) {
             }
         }
         // Going Down Vertical Squares
-        
+        /* Find the position of all the pieces on the row
+        If the position of the King is less than the rook, count from right
+        If the position of the King is great than the rook*/ 
         for(i=1;i<7;i++){
             nextSquare=position+8*i
             if(allOtherPiecesPosition.includes(nextSquare)==false){
@@ -165,20 +169,45 @@ function kingIsInCheck (chessboard) {
             }
         }
         //Going Left Across Row
-        for(i=0;i<7;i++){
-            console.log(lastIndexOfRow-i)
-            console.log(position)
-            let tempAllOtherPiecesPosition=allOtherPiecesPosition.filter((x)=> x!=position)
-            console.log(tempAllOtherPiecesPosition)
-            if(tempAllOtherPiecesPosition.includes(lastIndexOfRow-i)==false){
+        /*If the King's position is greater than the rooks, we start counting at the
+        rook and go right on the row, including all left tiles until we hit something
 
-                array.push(lastIndexOfRow-i)
-            }
-            if(tempAllOtherPiecesPosition.includes(lastIndexOfRow-i)==true){
-                break
+        If the King's postion is less than the rooks, start at the rook, and go left,
+        including all right tiles until we hit something*/
+
+        const kingsRowPosition = chessboard[row].indexOf('♔')
+        
+        if(kingsRowPosition<chessboard.indexOf([row][piece])){//if the King is to the left of the rook
+            for(i=0;i<8;i++){                
+                let tempAllOtherPiecesPosition=allOtherPiecesPosition.filter((x)=> x!=position)
+                // console.log(tempAllOtherPiecesPosition)
+                // console.log(lastIndexOfRow-i)
+                if(tempAllOtherPiecesPosition.includes(lastIndexOfRow-i)==false){
+                    array.push(lastIndexOfRow-i)
+                }
+                if(tempAllOtherPiecesPosition.includes(lastIndexOfRow-i)==true){
+                    break
+                }
             }
         }
+        console.log(kingsRowPosition)
+        console.log(chessboard[row][piece])
+        if(kingsRowPosition>chessboard.indexOf([row][piece])){//if the King is to the right of the rook
+            
+            for(i=0;i<8;i++){                
+                let tempAllOtherPiecesPosition=allOtherPiecesPosition.filter((x)=> x!=position)
+                // console.log(tempAllOtherPiecesPosition)
+                // console.log(lastIndexOfRow-i)
+                if(tempAllOtherPiecesPosition.includes(firstIndexOfRow+i)==false){
+                    array.push(firstIndexOfRow+i)
+                }
+                if(tempAllOtherPiecesPosition.includes(firstIndexOfRow+i)==true){
+                    break
+                }
+        }
         
+        
+        }
       
         console.log(array)
         return array    
@@ -265,11 +294,13 @@ kingIsInCheck([
 [' ', ' ', ' ', '3', ' ', '5', ' ', ' '],//[0]  [0]-[7]
 [' ', ' ', '0', ' ', ' ', ' ', '4', ' '],//[1]  [8]-[15]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[2]  [16]-[23] [18]
-['♜', '♟', '♔', ' ', ' ', ' ', ' ', ' '],//[3]  [24]-[31]
+['♜', '♞', '♔', ' ', ' ', ' ', ' ', ' '],//[3]  [24]-[31]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[4]  [32]-[39] [35]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[5]  [40]-[47]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],//[6]  [48]-[55]
 [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']])//[7] [56]-[63]
+
+
 
 //Data table
 //[42, 26, 49, 17, 56, 8, 28, 44, 21, 53, 14, 62, 7, 71]
