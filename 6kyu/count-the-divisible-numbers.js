@@ -1,4 +1,4 @@
-/* First solution, O(n^2) 
+/* Second solution, O(n) 
 Too slow, couldn't finish, but works*/
 function divisibleCount(x, y, k) {
     let allNumbers=[]
