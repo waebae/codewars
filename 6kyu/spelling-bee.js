@@ -1,20 +1,25 @@
 /*Instead of testing each and every space, it would be faster to find all the B
 letters and see how many "bee"s they can spell.*/
 
-/*The random test parameters have changed greatly from the sample examples.
-There is no longer a fixed '.' every three indexes */
+/*Template for random tests developed, need to fix error with left and right
+check as they will make false positives. Check for only left and right in the
+same row */
 
 howManyBees = function(hive) {
-    console.log(hive)
-    // if(!hive || !Array.isArray(hive) || hive.length === 0){
-    //     return 0
-    // }
-    let combinedHive=hive[0].concat(hive[1],hive[2])
-    let beeCount = 0
-    console.log(combinedHive)
+    let combinedHive=[]
+    let beeCount=0
+    if(!hive || !Array.isArray(hive) || hive.length === 0){
+        console.log('null')
+        return 0
+    }
+    for(let i = 0 ; i < hive.length ; i++){ //iterates through all the subarrays
+        for (let j = 0 ; j < hive[i].length;j++){ //iterates through all indexes in the subarrays
+            combinedHive.push(hive[i][j])
+        }
+    }
 
     function findLetterB(input){
-        output=[]
+        let output=[]
         for(let i=0;i<combinedHive.length;i++){
             if(combinedHive[i]=='b'){
                 output.push(i)
@@ -23,127 +28,44 @@ howManyBees = function(hive) {
         console.log(output)
         return output
     }
-
-    const indexOfB = findLetterB(combinedHive)
-    if (indexOfB==[]){
-        return 0
-    }
-
-    function topCheck(array){
+    const indexOfB=findLetterB(combinedHive)
+    function findLetterE(array){
+        let rowCount=hive[0].length
         
-        for(let i = 0; i<array.length;i++){ //loop the amount of B's
-            let currentArrayIndexValue=array[i]
-            if(array[i]>13){
+        for(let i = 0; i < indexOfB.length;i ++){ //iterate through amount of B's
+            let currentIndex=indexOfB[i]
 
-                if(combinedHive[currentArrayIndexValue-7]=='e'&&combinedHive[currentArrayIndexValue-14]=='e'){
-                    beeCount++
-                }
+            if(combinedHive[currentIndex-rowCount]==='e'&&combinedHive[currentIndex-rowCount*2]==='e'){
+                beeCount++
+            }
+        }
+        for(let i = 0; i < indexOfB.length;i ++){ //iterate through amount of B's
+            let currentIndex=indexOfB[i]
+
+            if(combinedHive[currentIndex+rowCount]==='e'&&combinedHive[currentIndex+rowCount*2]==='e'){
+                beeCount++
+            }
+        }
+        for(let i = 0; i < indexOfB.length;i ++){ //iterate through amount of B's
+            let currentIndex=indexOfB[i]
+
+            let indexOfBInRow=(currentIndex%rowCount)
+            let rowOfB=(Math.floor(currentIndex/rowCount))
+            if(hive[rowOfB][indexOfBInRow+1]==='e'&&hive[rowOfB][indexOfBInRow+2]==='e'){
+                beeCount++
+            }
+        }
+        for(let i = 0; i < indexOfB.length;i ++){ //iterate through amount of B's
+            let currentIndex=indexOfB[i]
+
+            let indexOfBInRow=(currentIndex%rowCount)
+            let rowOfB=(Math.floor(currentIndex/rowCount))
+            if(hive[rowOfB][indexOfBInRow-1]==='e'&&hive[rowOfB][indexOfBInRow-2]==='e'){
+                beeCount++
             }
         }
     }
-    
-    function bottomCheck(array){
-        for(let i = 0; i<array.length;i++){
-            let currentArrayIndexValue=array[i]
-            if(array[i]<7){
-                console.log(combinedHive[currentArrayIndexValue+7])
-                if(combinedHive[currentArrayIndexValue+7]=='e'&&combinedHive[currentArrayIndexValue+14]=='e'){
-                    beeCount++
-                }
-            }
-        }
+    findLetterE(indexOfB)
 
-    }
-    function leftCheck(array){
-        for(let i = 0; i<array.length;i++){
-            let currentArrayIndexValue=array[i]
-            console.log(currentArrayIndexValue)
-            if(array[i]==2||array[i]==9||array[i]==16||array[i]==6||array[i]==13||array[i]==20){
-                if(combinedHive[currentArrayIndexValue-1]=='e'&&combinedHive[currentArrayIndexValue-2]=='e'){
-                    beeCount++
-                }
-            }
-        }
-    }
-    function rightCheck(array){
-        console.log(array)
-        for(let i = 0; i<array.length;i++){
-            let currentArrayIndexValue=array[i]
-            console.log(currentArrayIndexValue)
-            console.log(array[i])
-            if(array[i]==0||array[i]==7||array[i]==14||array[i]==4||array[i]==11||array[i]==18){
-                console.log(combinedHive[currentArrayIndexValue+1])
-                if(combinedHive[currentArrayIndexValue+1]=='e'&&combinedHive[currentArrayIndexValue+2]=='e'){
-                    beeCount++
-                }
-            }
-        }
-    }
-
-    rightCheck(indexOfB)
-    leftCheck(indexOfB)
-    topCheck(indexOfB)
-    bottomCheck(indexOfB)
-    console.log(beeCount)
-    return(beeCount)
-}
-
-// howManyBees([
-//     [
-//       ' ', ' ', ' ','.', ' ', ' ',' '
-//     ],
-//     [
-//       'e', 'e', ' ','.', ' ', ' ',' '
-//     ],
-//     [
-//       'b', 'e', 'e','.', 'b', 'e','e'
-//     ]
-//   ])
-
-howManyBees([
-    [
-      'e', '.', 'e',
-      '.', 'b', 'b',
-      '.', 'e', 'e'
-    ],
-    [
-      'e', '.', 'b',
-      'e', '.', 'e',
-      'e', '.', 'b'
-    ],
-    [
-      '.', 'e', 'e',
-      '.', '.', 'b',
-      'b', 'e', 'e'
-    ],
-    [
-      'b', '.', 'e',
-      'e', 'e', '.',
-      'b', 'e', '.'
-    ],
-    [
-      'b', '.', '.',
-      'e', 'e', '.',
-      'e', 'e', 'b'
-    ],
-    [
-      'b', 'e', '.',
-      'e', 'e', 'b',
-      '.', 'e', '.'
-    ],
-    [
-      '.', 'e', '.',
-      'e', 'e', 'b',
-      'b', 'e', '.'
-    ],
-    [
-      'e', '.', 'e',
-      'e', 'b', 'e',
-      '.', '.', 'b'
-    ],
-    [
-      'e', 'b', 'b',
-      '.', 'e', 'e',
-      '.', '.', 'e'
-    ]
-  ])
+    return (beeCount)
+}   
