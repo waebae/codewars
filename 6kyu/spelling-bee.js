@@ -3,6 +3,10 @@ letters and see how many "bee"s they can spell.*/
 
 
 howManyBees = function(hive) {
+    console.log(hive)
+    // if(!hive || !Array.isArray(hive) || hive.length === 0){
+    //     return 0
+    // }
     let combinedHive=hive[0].concat(hive[1],hive[2])
     let beeCount = 0
     console.log(combinedHive)
@@ -19,46 +23,125 @@ howManyBees = function(hive) {
     }
 
     const indexOfB = findLetterB(combinedHive)
-    function topCheck(index){
-        if (index<14){ //if index is not on the bottom row, return false
-            return false
-        }
+    if (indexOfB==[]){
+        return 0
     }
-    function bottomCheck(){
-        if (index>7){
-            return false //if index is not on the top row, return false
-        }
-    }
-    function leftCheck(array){ //!! Connect the function call parameter to the statements
-        if (index==2||index==9||index==16||index==6||index==13||index==20){
-            if(combinedHive[index]-1=='e'&&combinedHive[index]-2=='e'){
-                console.log('hi')
-                return true
+
+    function topCheck(array){
+        
+        for(let i = 0; i<array.length;i++){ //loop the amount of B's
+            let currentArrayIndexValue=array[i]
+            if(array[i]>13){
+
+                if(combinedHive[currentArrayIndexValue-7]=='e'&&combinedHive[currentArrayIndexValue-14]=='e'){
+                    beeCount++
+                }
             }
         }
-        else return false
     }
-    leftCheck(indexOfB)
-    function rightCheck(){
-
-    }
-    function spellsBee(index){
-        
-    }
-
     
-    spellsBee(indexOfB)
-    // for(let )
-    // return 0
+    function bottomCheck(array){
+        for(let i = 0; i<array.length;i++){
+            let currentArrayIndexValue=array[i]
+            if(array[i]<7){
+                console.log(combinedHive[currentArrayIndexValue+7])
+                if(combinedHive[currentArrayIndexValue+7]=='e'&&combinedHive[currentArrayIndexValue+14]=='e'){
+                    beeCount++
+                }
+            }
+        }
+
+    }
+    function leftCheck(array){
+        for(let i = 0; i<array.length;i++){
+            let currentArrayIndexValue=array[i]
+            console.log(currentArrayIndexValue)
+            if(array[i]==2||array[i]==9||array[i]==16||array[i]==6||array[i]==13||array[i]==20){
+                if(combinedHive[currentArrayIndexValue-1]=='e'&&combinedHive[currentArrayIndexValue-2]=='e'){
+                    beeCount++
+                }
+            }
+        }
+    }
+    function rightCheck(array){
+        console.log(array)
+        for(let i = 0; i<array.length;i++){
+            let currentArrayIndexValue=array[i]
+            console.log(currentArrayIndexValue)
+            console.log(array[i])
+            if(array[i]==0||array[i]==7||array[i]==14||array[i]==4||array[i]==11||array[i]==18){
+                console.log(combinedHive[currentArrayIndexValue+1])
+                if(combinedHive[currentArrayIndexValue+1]=='e'&&combinedHive[currentArrayIndexValue+2]=='e'){
+                    beeCount++
+                }
+            }
+        }
+    }
+
+    rightCheck(indexOfB)
+    leftCheck(indexOfB)
+    topCheck(indexOfB)
+    bottomCheck(indexOfB)
+    console.log(beeCount)
+    return(beeCount)
 }
+
+// howManyBees([
+//     [
+//       ' ', ' ', ' ','.', ' ', ' ',' '
+//     ],
+//     [
+//       'e', 'e', ' ','.', ' ', ' ',' '
+//     ],
+//     [
+//       'b', 'e', 'e','.', 'b', 'e','e'
+//     ]
+//   ])
+
 howManyBees([
     [
-      'b', 'e', 'e','. ', 'b', 'e','e'
+      'e', '.', 'e',
+      '.', 'b', 'b',
+      '.', 'e', 'e'
     ],
     [
-      '.', 'e', '.','.', 'e', '.','.'
+      'e', '.', 'b',
+      'e', '.', 'e',
+      'e', '.', 'b'
     ],
     [
-      '.', 'b', '.','.', 'e', 'e','b'
+      '.', 'e', 'e',
+      '.', '.', 'b',
+      'b', 'e', 'e'
+    ],
+    [
+      'b', '.', 'e',
+      'e', 'e', '.',
+      'b', 'e', '.'
+    ],
+    [
+      'b', '.', '.',
+      'e', 'e', '.',
+      'e', 'e', 'b'
+    ],
+    [
+      'b', 'e', '.',
+      'e', 'e', 'b',
+      '.', 'e', '.'
+    ],
+    [
+      '.', 'e', '.',
+      'e', 'e', 'b',
+      'b', 'e', '.'
+    ],
+    [
+      'e', '.', 'e',
+      'e', 'b', 'e',
+      '.', '.', 'b'
+    ],
+    [
+      'e', 'b', 'b',
+      '.', 'e', 'e',
+      '.', '.', 'e'
     ]
   ])
