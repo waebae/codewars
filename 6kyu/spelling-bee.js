@@ -1,6 +1,8 @@
 /*Instead of testing each and every space, it would be faster to find all the B
 letters and see how many "bee"s they can spell.*/
 
+/*The random test parameters have changed greatly from the sample examples.
+There is no longer a fixed '.' every three indexes */
 
 howManyBees = function(hive) {
     console.log(hive)
