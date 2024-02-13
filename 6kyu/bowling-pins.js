@@ -1,32 +1,34 @@
-//I think I should consider making four seperate arrays with lengths of 7 each,
-//and splicing data into those arrays instead of my approach right now. 
-
+//
 function bowlingPins(arr) {
-    
+    let array = ['7' , ' ' , '8', ' ', '9',' ', '10 ', 
+                '\n',
+                ' ' , '4' , ' ' , '5', ' ', '6', ' ',
+                '\n', 
+                ' ', ' ', '2' , ' ' , '3' , ' ' , ' ',
+                '\n',
+                ' ', ' ' , ' ' , '1' , ' ' , ' ' , ' ']
 
-    let array1=['I' , ' ' , 'I' , ' ' , 'I', ' ' , 'I']   //['1', ' ', '2', ' ', '3', ' ','4'] 
-    let array2=[' ' , 'I' , ' ' , 'I' , ' ', 'I' , ' ']   //[' ', '1', ' ', '2', ' ', '3',' '] 
-    let array3=[' ' , ' ' , 'I' , ' ' , 'I', ' ' , ' ']   //[' ', ' ', '1', ' ', '2', ' ',' '] 
-    let array4=[' ' , ' ' , ' ' , 'I' , ' ', ' ' , ' ']   //[' ', ' ', ' ', '1', ' ', ' ',' '] 
-
-    for( let i = 0 ; i<arr.length ; i++){
-        if(arr[i]<5){ //operate on array1
-            
-        }
-         else if(arr[i]<8){ //operate on array2
-
-        }
-        else if(arr[i]<10){ //operate on array3
-
-        }
-
-        else if(arr[i]<11){ //operate on array4
-
+    console.log(array)
+    console.log(array.join(''))
+   
+    for( let i = 0 ; i < array.length ; i++){
+        for ( let j = 0 ; j < array.length ; j++){
+            if (array[i]==arr[j]){
+                array[i]=' '
+            }
         }
     }
-    //turn all arrays in string and concat them
 
+    for (let i = 0; i < array.length ; i++){
+        if (array[i]!=' ' && array[i]!='\n'){
+            array[i]='I'
+        }
+    }
+
+    console.log(array.join(''))
+    return array.join('')
 }
+
 bowlingPins([2, 4])
 
 //'I I I I\n I I I \n       \n   I   '
