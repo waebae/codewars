@@ -2,48 +2,29 @@
 //and splicing data into those arrays instead of my approach right now. 
 
 function bowlingPins(arr) {
- 
-    let pinArray=[10,9,8,7,6,5,4,3,2,1]
+    
 
-    //remove the index of the elements in arr from pinArray
+    let array1=['I' , ' ' , 'I' , ' ' , 'I', ' ' , 'I']   //['1', ' ', '2', ' ', '3', ' ','4'] 
+    let array2=[' ' , 'I' , ' ' , 'I' , ' ', 'I' , ' ']   //[' ', '1', ' ', '2', ' ', '3',' '] 
+    let array3=[' ' , ' ' , 'I' , ' ' , 'I', ' ' , ' ']   //[' ', ' ', '1', ' ', '2', ' ',' '] 
+    let array4=[' ' , ' ' , ' ' , 'I' , ' ', ' ' , ' ']   //[' ', ' ', ' ', '1', ' ', ' ',' '] 
 
-    for ( let i = 0 ; i < arr.length ; i ++ ){
-        let pinIndex=pinArray.indexOf(arr[i])
-        pinArray.splice(pinIndex,1,0) //we replace all shared values with 0
-    }
-    console.log(pinArray)
-
-    for ( let i = 0 ; i < pinArray.length ; i ++ ){ //replaces all non-empty values with I
-
-        if(pinArray[i] && i == 4){
-            pinArray.splice(i,1,' I ')
+    for( let i = 0 ; i<arr.length ; i++){
+        if(arr[i]<5){ //operate on array1
+            
         }
-        else if(pinArray[i] && i == 3){
-            pinArray.splice(i,1,'I')
-        }
-        else if(pinArray[i] == 0 ){
-            pinArray.splice(i,1,' ')
-        }
-        else {pinArray[i]? pinArray.splice(i,1,'I ') :pinArray.splice(i,1,' ')}
+         else if(arr[i]<8){ //operate on array2
 
+        }
+        else if(arr[i]<10){ //operate on array3
 
-    }
-    console.log(pinArray)
-    for (let i=0;i<pinArray.length;i++){
-        if(i==4||i==8||i==11){
-            pinArray.splice(i,0,'\n')
+        }
+
+        else if(arr[i]<11){ //operate on array4
+
         }
     }
-
-    
-    
-    console.log(pinArray)
-    
-    pinArray=pinArray.join('')
-
-    
-    console.log(pinArray)
-    return(pinArray)
+    //turn all arrays in string and concat them
 
 }
 bowlingPins([2, 4])
