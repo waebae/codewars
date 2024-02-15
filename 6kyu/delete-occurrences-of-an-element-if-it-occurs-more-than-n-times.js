@@ -9,10 +9,13 @@ function deleteNth(arr,n){
         return unique;
     }
     const uniqueValues = removeDuplicates(arr)
+    console.log(arr)
+    arr=arr.join('')
+    console.log(arr)
     for (let i = 0 ; i < uniqueValues.length ; i ++) {
-        let nthCount=arr.lastIndexOf(uniqueValues[i])
-        console.log(nthCount)
-        arr.splice(nthCount)
+        arr=arr.split(uniqueValues[i], 2).join("")
+        console.log(arr)
     }
+    console.log(arr)
 }
 deleteNth([1,2,3,1,2,1,2,3],2)
