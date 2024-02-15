@@ -8,14 +8,21 @@ function deleteNth(arr,n){
         }
         return unique;
     }
+    stringArr=arr.join('')
     const uniqueValues = removeDuplicates(arr)
-    console.log(arr)
-    arr=arr.join('')
-    console.log(arr)
-    for (let i = 0 ; i < uniqueValues.length ; i ++) {
-        arr=arr.split(uniqueValues[i], 2).join("")
-        console.log(arr)
+    function getPosition(string, subString, index) {
+        return string.split(subString, index).join(subString).length;
     }
-    console.log(arr)
+
+    let indexesAfterN = []
+    uniqueValues.forEach(number=>{
+        indexesAfterN.push(getPosition(stringArr,number.toString(),n+1))
+    })
+    console.log(indexesAfterN)
+
+    for(let i = 0 ; i < uniqueValues.length; i ++){
+        let index = indexesAfterN[i]
+        
+    }
 }
 deleteNth([1,2,3,1,2,1,2,3],2)
