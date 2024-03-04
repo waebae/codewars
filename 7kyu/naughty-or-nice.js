@@ -1,9 +1,25 @@
 function naughtyOrNice(data) {
-    for (const month in data){
-        for (let [key, value] of Object.entries(month)) {
-            console.log(key, value);
+    let naughtyCount = 0
+    let niceCount = 0
+    for (const [key, value] of Object.entries(data)) {
+        console.log(typeof(value))
+        let currentValue = value
+        for (const [key, value] of Object.entries(currentValue)) {
+            if(value.toLowerCase()==='nice'){
+                niceCount++
+            }
+            if(value.toLowerCase()==='naughty'){
+                naughtyCount++
+            }
         }
     }
+    if(naughtyCount>niceCount){
+        return("Naughty!")
+    }
+    else if(niceCount>naughtyCount||niceCount===naughtyCount){
+        return("Nice!")
+    }
+
 }
 naughtyOrNice({
     January: {
