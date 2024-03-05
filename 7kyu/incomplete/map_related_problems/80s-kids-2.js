@@ -1,17 +1,21 @@
-function findSpaceship(map) {
-  console.log(typeof(map))
-  let array = map.split('')
-  array = array.filter(element=> element !='\n')
-  console.log(array)
-  const index= array.indexOf('X')
-  const rowLength=map.indexOf('\n')
+//Learned to use string.split('\n') to turn string inputs into arrays that can
+//be manipulated using "rows" and "columns"
 
-  return([index%rowLength,Math.floor(index/rowLength)])
+const findSpaceship = (map = "") => {
+  // console.log(map)
+  map = map.split("\n").reverse()
+  console.log(map[0])
+
+  for (let y = 0; y < map.length; y++) {
+    for (let x = 0; x < map[y].length; x++) {
+      if (map[y][x] === "X") return [x, y]
+    }
+  }
+
+  return "Spaceship lost forever."
 }
-findSpaceship(
-  '..........\n..........\n.......X..\n..........\n..........')
-
-  /*
+findSpaceship('..........\n..........\n.......X..\n..........\n..........')
+/*
 ..........[5]
 ..........[4]
 ..........[3]
