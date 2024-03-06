@@ -1,8 +1,9 @@
 function naughtyOrNice(data) {
+    console.log((data.February[2]))
     let naughtyCount = 0
     let niceCount = 0
     for (const [key, value] of Object.entries(data)) {
-        console.log(typeof(value))
+
         let currentValue = value
         for (const [key, value] of Object.entries(currentValue)) {
             if(value.toLowerCase()==='nice'){
