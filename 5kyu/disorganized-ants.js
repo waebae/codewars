@@ -1,6 +1,5 @@
 function bumpCounter(ants){
 
-    loopThroughCount=0
     let antsString=ants
     let bumpArray=[]
     for ( let i = 0; i<ants.split('').length;i++){
@@ -8,31 +7,36 @@ function bumpCounter(ants){
     }
 
     function nextBump(string){
-        return(string=antsString.replace(('RL'),('LR')))
+        return(string=antsString.replaceAll(('RL'),('LR')))
     }
-
-    
-    function compareStrings(previous, current,index){
-        for (index in previous){
-            if (previous[index]!=current[index]){
-                bumpArray[index]+=1
-            }
+    function findIndexOfRL(string){
+        count = 0
+        let rL = []
+        while (count < string.length){
+            rL.push(string.indexOf('RL',count))
+            count++
         }
+        return rL
     }
-    
+
+    function onlyUnique(value, index, array) {
+        return array.indexOf(value) === index;
+    }
+
     while(antsString.indexOf('RL')!=-1){
-        let previousAntsString=antsString
+        let indexOfRl=findIndexOfRL(antsString).filter(onlyUnique)
+        indexOfRl = indexOfRl.filter((value)=>value!=-1)
+        
+        indexOfRl.forEach((index)=>{
+            bumpArray[index]+=1
+            bumpArray[index+1]+=1
+        })
         antsString=nextBump(antsString)
-        compareStrings(previousAntsString,antsString)
-
     }
+
     return(bumpArray.join(' '))
-
-    //end condition
-
-
 }
-bumpCounter('RRRLL')
+bumpCounter('RRRLL') //1 3 4 3 1
 
 /*Old code
 function bumpCounter(ants){
