@@ -1,5 +1,32 @@
-//Is antsString even necessary when we already have input of ants? Probably not.
+function bumpCounter(ants){
 
+    loopThroughCount=0
+    let antsString=ants
+    //make a loop for every bump
+
+    //ideally i dont want nextString to be a global variable
+    // let nextString=ants
+
+    //So far I have a function to return the next bump cycle
+    function nextBump(string){
+        return(string=antsString.replace(('RL'),('LR')))
+    }
+    //I need some way to store the last bump cycle to compare with the current
+    //one
+    
+    while(antsString.indexOf('RL')!=-1){
+        antsString=nextBump(antsString)
+        console.log(antsString)
+    }
+    
+
+    //end condition
+
+
+}
+bumpCounter('RRRLL')
+
+/*Old code
 function bumpCounter(ants){
 
     let antsArray = ants.split('')
@@ -14,17 +41,18 @@ function bumpCounter(ants){
     
     //I can now solve for whata the finished string will look like, but I have
     //not solved for the amount of collisions
+
     let antsString=antsArray.join('')
+    let antsStringSplit=antsString.split('')
     while(antsString.indexOf('RL')!=-1){
-        previousAntsString=antsString
+        let previousAntsString=antsString 
         antsString=antsString.replace(('RL'),('LR'))
         //Here I need to write an algorithm that can count the amount of times
         //collisions occur. My current plan is to find the different letters in
         //ants and antsString. Then use the index of those letters to increase
         //bumpArray[index]
-        let antsStringSplit=antsString.split('')
-        currentAntsString=antsString
 
+        currentAntsString=antsString    
 
         for (index in previousAntsString){
             if (previousAntsString[index]!=currentAntsString[index]){
@@ -32,11 +60,10 @@ function bumpCounter(ants){
             }
         }
     }
-    
     return(bumpArray.join(' '))
 
 }
-
-bumpCounter('RRRLL')
-
-
+  
+*/
+  
+  
