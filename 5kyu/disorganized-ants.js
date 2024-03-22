@@ -2,23 +2,31 @@ function bumpCounter(ants){
 
     loopThroughCount=0
     let antsString=ants
-    //make a loop for every bump
+    let bumpArray=[]
+    for ( let i = 0; i<ants.split('').length;i++){
+        bumpArray.push(0)
+    }
 
-    //ideally i dont want nextString to be a global variable
-    // let nextString=ants
-
-    //So far I have a function to return the next bump cycle
     function nextBump(string){
         return(string=antsString.replace(('RL'),('LR')))
     }
-    //I need some way to store the last bump cycle to compare with the current
-    //one
+
     
-    while(antsString.indexOf('RL')!=-1){
-        antsString=nextBump(antsString)
-        console.log(antsString)
+    function compareStrings(previous, current,index){
+        for (index in previous){
+            if (previous[index]!=current[index]){
+                bumpArray[index]+=1
+            }
+        }
     }
     
+    while(antsString.indexOf('RL')!=-1){
+        let previousAntsString=antsString
+        antsString=nextBump(antsString)
+        compareStrings(previousAntsString,antsString)
+
+    }
+    return(bumpArray.join(' '))
 
     //end condition
 
